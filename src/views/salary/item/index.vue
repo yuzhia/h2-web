@@ -1,8 +1,5 @@
 <template>
   <div class="app-container">
-    <x-table-header
-			:table-columns="XTableColumnFilterRef?.getColumnsOption()"
-		/>
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="项目名称" prop="name">
         <el-input
@@ -57,22 +54,20 @@
                v-hasPermi="['system:post:export']"
             >导出</el-button>
          </el-col>
-         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+         <right-toolbar v-model:showSearch="showSearch" :columns="columns" @queryTable="getList" ></right-toolbar>
       </el-row>
 
         <el-table v-loading="loading" :data="itemList" @selection-change="handleSelectionChange">
-      <x-table-column-filter ref="XTableColumnFilterRef">
-
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="项目名称" align="center" prop="name" />
-          <el-table-column label="数据类型" align="center" prop="dataType" >
+          <el-table-column label="项目名称" align="center" prop="name" v-if="columns[0].visible" />
+          <el-table-column label="数据类型" align="center" prop="dataType" v-if="columns[1].visible" >
             <template #default="{ row }">
               <div>{{ row.dataType === 0 ? '数据型' : row.dataType === 1 ? '字符型' : '日期型' }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="项目长度" align="center" prop="itemLen" />
-          <el-table-column label="小数位数" align="center" prop="decimalDigits" />
-          <el-table-column label="项目类型" align="center" prop="itemType" >
+          <el-table-column label="项目长度" align="center" prop="itemLen" v-if="columns[2].visible" />
+          <el-table-column label="小数位数" align="center" prop="decimalDigits" v-if="columns[3].visible" />
+          <el-table-column label="项目类型" align="center" prop="itemType" v-if="columns[4].visible" >
             <template #default="{ row }">
               <div v-if="row.itemType === 0">公式</div>
               <div v-else-if="row.itemType === 1">固定</div>
@@ -80,16 +75,14 @@
               <div v-else>休假补工资</div>
             </template>
           </el-table-column>
-          <el-table-column label="序号" align="center" prop="order" />
-          <el-table-column label="公式" align="center" prop="desc" />
+          <el-table-column label="序号" align="center" prop="order" v-if="columns[5].visible" />
+          <el-table-column label="公式" align="center" prop="desc" v-if="columns[6].visible" />
           <el-table-column label="操作" width="180" align="center" class-name="small-padding fixed-width">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:post:edit']">修改</el-button>
                 <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:post:remove']">删除</el-button>
               </template>
           </el-table-column>
-        </x-table-column-filter>
-        
         </el-table>
 
       <pagination
@@ -152,18 +145,10 @@
 
 <script setup name="Item">
 import { listItem, addItem, delItem, getItem, updateItem } from "@/api/salary/item";
-import XTableColumnFilter from '@/components/TableColumnFilter/index'
-import XTableHeader from '@/components/TableColumnFilter/TableHeader.vue'
 
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
-
-const XTableColumnFilterRef = ref()
-
-onMounted(() => {
-	console.log(XTableColumnFilterRef.value.getColumnsOption());
-})
+const route = useRoute()
 
 const itemList = ref([]);
 const open = ref(false);
@@ -186,6 +171,17 @@ const typeValList = [
   {value: 2,label: '变动',},
   {value: 3,label: '休假补工资',},
 ]
+
+// 列显隐信息
+const columns = ref([
+  { key: 0, label: `项目名称`, visible: true },
+  { key: 1, label: `数据类型`, visible: true },
+  { key: 2, label: `项目长度`, visible: true },
+  { key: 3, label: `小数位数`, visible: true },
+  { key: 4, label: `项目类型`, visible: true },
+  { key: 5, label: `序号`, visible: false },
+  { key: 6, label: `公式`, visible: true }
+]);
 
 
 const data = reactive({

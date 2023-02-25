@@ -12,6 +12,13 @@ import store from './store'
 import router from './router'
 import directive from './directive' // directive
 
+import Calendar from '@/components/calendar'
+
+// import $ from 'jquery'
+
+
+// import '@/assets/hr_resources/base.js'
+
 
 // 注册指令
 import plugins from './plugins' // plugins
@@ -46,6 +53,9 @@ import 'uno.css'
 
 const app = createApp(App)
 
+// 自己的日历
+app.use(Calendar)
+
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
@@ -79,5 +89,7 @@ app.use(ElementPlus, {
   // 支持 large、default、small
   size: Cookies.get('size') || 'default'
 })
+
+// app.use($)
 
 app.mount('#app')

@@ -62,17 +62,17 @@
           v-hasPermi="['hr:change:export']"
         >导出</el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar v-model:showSearch="showSearch" :columns="columns" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="changeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="项目名称" align="center" prop="name" />
-      <el-table-column label="员工" align="center" prop="userId" />
-      <el-table-column label="异动前薪资" align="center" prop="salaryBeforeChange" />
-      <el-table-column label="异动后薪资" align="center" prop="salaryAfterChange" />
-      <el-table-column label="异动原因" align="center" prop="changeReason" />
-      <el-table-column label="异动时间" align="center" prop="changeTime" width="180">
+      <el-table-column label="项目名称" align="center" prop="name"  v-if="columns[0].visible" />
+      <el-table-column label="员工" align="center" prop="userId"  v-if="columns[1].visible"/>
+      <el-table-column label="异动前薪资" align="center" prop="salaryBeforeChange" v-if="columns[2].visible" />
+      <el-table-column label="异动后薪资" align="center" prop="salaryAfterChange" v-if="columns[3].visible" />
+      <el-table-column label="异动原因" align="center" prop="changeReason" v-if="columns[4].visible" />
+      <el-table-column label="异动时间" align="center" prop="changeTime" width="180" v-if="columns[5].visible">
         <template #default="scope">
           <span>{{ parseTime(scope.row.changeTime, '{y}-{m}-{d}') }}</span>
         </template>
@@ -171,6 +171,16 @@ const userList = [
     ],
   }
 ]
+
+// 列显隐信息
+const columns = ref([
+  { key: 0, label: `项目名称`, visible: true },
+  { key: 1, label: `员工`, visible: true },
+  { key: 2, label: `异动前薪资`, visible: true },
+  { key: 3, label: `异动后薪资`, visible: true },
+  { key: 4, label: `异动原因`, visible: true },
+  { key: 5, label: `异动时间`, visible: true },
+]);
 
 const data = reactive({
   form: {},

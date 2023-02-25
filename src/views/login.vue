@@ -1,5 +1,19 @@
 <template>
   <div class="login">
+    <div class="signin-info">
+        <div class="logopanel m-b">
+            <h1>[HR SYSTEM]</h1>
+        </div>
+        <div class="m-b"></div>
+        <h4>欢迎使用 <strong>HR SYSTEM</strong></h4>
+        <ul class="m-b">
+            <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 私有化部署</li>
+            <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 私有化数据库</li>
+            <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 功能全面</li>
+            <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 7*24小时在线支持</li>
+            <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 最优秀的HR管理系统</li>
+        </ul>
+    </div>
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">hr后台管理系统</h3>
       <el-form-item prop="username">
@@ -57,8 +71,9 @@
         </div>
       </el-form-item>
     </el-form>
-    <!--  底部  -->
+     <!-- 底部  -->
     <div class="el-login-footer">
+      © {{ new Date().getFullYear() }} All Rights Reserved. HR SYSTEM
     </div>  
   </div>
 </template>
@@ -152,11 +167,14 @@ getCookie();
 <style lang='scss' scoped>
 .login {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-image: url("../assets/images/login_bg.png");
   background-size: cover;
+  .signin-info {
+    color: #fff;
+  }
 }
 .title {
   margin: 0px auto 30px auto;
@@ -167,6 +185,7 @@ getCookie();
 .login-form {
   border-radius: 6px;
   background: #ffffff;
+  // background: rgba(255, 255, 255, 0.2);
   width: 400px;
   padding: 25px 25px 5px 25px;
   .el-input {
