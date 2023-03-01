@@ -51,6 +51,8 @@ import DictTag from '@/components/DictTag'
 
 import 'uno.css'
 
+import '@/assets/styles/global.css'
+
 const app = createApp(App)
 
 // 自己的日历

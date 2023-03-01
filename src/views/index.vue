@@ -6,13 +6,11 @@
     <div class="ibox-tools">
       <a class="btn_info" href="#" style="color:#409EFF;">更多</a>
     </div>
-    <!-- <moudle-menu></moudle-menu> -->
   
   </div>
 </template>
 
 <script setup name="Index">
-
 </script>
 
 

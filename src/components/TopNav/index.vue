@@ -40,7 +40,8 @@ const visibleNumber = ref(null);
 // 当前激活菜单的 index
 const currentIndex = ref(null);
 // 隐藏侧边栏路由
-const hideList = ['/index', '/user/profile'];
+// const hideList = ['/index', '/user/profile'];
+const hideList = [];
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
@@ -52,6 +53,8 @@ const router = useRouter();
 const theme = computed(() => settingsStore.theme);
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
+// 默认不显示左侧菜单
+permissionStore.setSidebarRouters([]);
 
 // 顶部显示菜单
 const topMenus = computed(() => {
@@ -102,8 +105,16 @@ const activeMenu = computed(() => {
     }
   } else if(!route.children) {
     activePath = path;
-    appStore.toggleSideBarHide(true);
+    // appStore.toggleSideBarHide(true);
+    appStore.toggleSideBarHide(false);
   }
+  // 默认菜单路由的地址
+  const defaultPath = appStore.getDefaultPath();
+  if (defaultPath !== null && 
+    !(path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1)) {
+    activePath = defaultPath
+  }
+  appStore.toggleSideBarHide(false);
   activeRoutes(activePath);
   return activePath;
 })
@@ -114,6 +125,7 @@ function setVisibleNumber() {
 }
 
 function handleSelect(key, keyPath) {
+  console.log(key, keyPath);
   currentIndex.value = key;
   const route = routers.value.find(item => item.path === key);
   if (isHttp(key)) {
@@ -122,7 +134,8 @@ function handleSelect(key, keyPath) {
   } else if (!route || !route.children) {
     // 没有子路由路径内部打开
     router.push({ path: key });
-    appStore.toggleSideBarHide(true);
+    // appStore.toggleSideBarHide(true);
+    appStore.toggleSideBarHide(false);
   } else {
     // 显示左侧联动菜单
     activeRoutes(key);

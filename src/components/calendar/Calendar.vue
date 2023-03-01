@@ -89,8 +89,6 @@ function selectDay(date) {
     selectedSet.add(date)
   }
   emit('select', selectedSet)
-  // emit('select', list)
-  // selectedSet.clear()
 }
 
 function getData() {
@@ -106,8 +104,21 @@ function getData() {
   return list
 }
 
+function getUnSelect() {
+  const list = []
+  childs.value.forEach(child => {
+    let {status, year, month, day} = child.get()
+    if (!status) {
+      list.push({
+        year, month, day
+      })
+    }
+  });
+  return list
+}
+
 function setData(y, m, d, status) {
-  if (y !== data.year || m !== data.month) return
+  if (y != data.year || m != data.month) return
   childs.value.forEach(item => item.setStatus(y, m, d, status))
 }
 
@@ -134,13 +145,30 @@ function putAll(arr, start, end, row) {
   }
 }
 
+/**
+ * 反向选择，传入包含年月日的list，如果都不是当前组件的时间，则选中
+ */
+function reverseSelect(list) {
+  childs.value.forEach(item => item.reverseSetStatus(list))
+}
+
+function setDataByList(list) {
+  const filterList = list.filter(item => {
+    return item[0] == data.year && item[1] == data.month
+  })
+  filterList.forEach(item => setData(item[0], item[1], item[2], true))
+}
+
 defineExpose({
   selectByAll,
   selectByWorkDay,
   selectByBigSmallWork,
   unselect,
   getData,
-  setData
+  getUnSelect,
+  setData,
+  reverseSelect,
+  setDataByList
 })
 
 

@@ -64,9 +64,10 @@ export const constantRoutes = [
     children: [
       {
         path: '/index',
-        component: () => import('@/views/index'),
+        // component: () => import('@/views/index'),
+        component: () => import('@/views/monitor/server/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: {title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -81,6 +82,12 @@ export const constantRoutes = [
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
         meta: { title: '个人中心', icon: 'user' }
+      },
+      {
+        path: 'emp/profile',
+        component: () => import('@/views/system/user/empProfile/index'),
+        name: 'EmpProfile',
+        meta: { title: '员工信息', icon: 'user' }
       }
     ]
   }

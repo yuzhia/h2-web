@@ -71,10 +71,12 @@
         <el-table-column label="所属公司" align="center" prop="company" />
         <el-table-column label="所属部门" align="center" prop="department" />
         <el-table-column label="备注" align="center" prop="desc" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="200px" >
           <template #default="scope">
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['hr:group:edit']">修改</el-button>
             <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['hr:group:remove']">删除</el-button>
+            <el-button link type="primary" icon="Delete" @click="handleScheduling(scope.row)" v-hasPermi="['hr:group:remove']">排班</el-button>
+            
           </template>
         </el-table-column>
       </el-table>
@@ -137,7 +139,9 @@
   </template>
   
   <script setup >
-  import { listGroup, getGroup, delGroup, addGroup, updateGroup } from "@/api/hr/group";
+  import { listGroup, getGroup, delGroup, addGroup, updateGroup } from "@/api/hr/attendance/group";
+
+  const router = useRouter()
   
   const { proxy } = getCurrentInstance();
   const route = useRoute()
@@ -265,6 +269,16 @@ const columns = ref([
       open.value = true;
       title.value = "修改班组信息";
     });
+  }
+
+  function handleScheduling(row) {
+    console.log(row);
+    router.push({
+      path: '/attendance/setting/calscheduling',
+      query: {
+        classesGroupId: row.id
+      }
+    })
   }
   
   /** 提交按钮 */

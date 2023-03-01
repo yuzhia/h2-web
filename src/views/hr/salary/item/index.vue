@@ -144,7 +144,7 @@
 </template>
 
 <script setup name="Item">
-import { listItem, addItem, delItem, getItem, updateItem } from "@/api/salary/item";
+import { listItem, addItem, delItem, getItem, updateItem } from "@/api/hr/salary/item";
 
 const { proxy } = getCurrentInstance();
 

@@ -179,7 +179,7 @@
   </template>
   
   <script setup>
-  import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/hr/scheduling";
+  import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/hr/attendance/scheduling";
   
   const { proxy } = getCurrentInstance();
   

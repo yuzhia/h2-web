@@ -137,8 +137,8 @@
 </template>
 
 <script setup name="Change">
-import { listChange, getChange, delChange, addChange, updateChange } from "@/api/salary/change";
-import { getItemType } from "@/api/salary/item";
+import { listChange, getChange, delChange, addChange, updateChange } from "@/api/hr/salary/change";
+import { getItemType } from "@/api/hr/salary/item";
 import { numMulti } from '@/utils/hr.js'
 
 const { proxy } = getCurrentInstance();

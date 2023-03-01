@@ -98,44 +98,90 @@
         <el-form-item label="班次名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入班次名称" />
         </el-form-item>
-        <el-form-item label="班次开始时间小时" prop="startHour">
-          <el-input v-model="form.startHour" placeholder="请输入班次开始时间小时" />
+        <el-form-item label="班组" prop="classesgroupId">
+          <el-select v-model="form.classesgroupId">
+            <el-option
+              v-for="item in groupList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="班次结束时间小时" prop="endHour">
-          <el-input v-model="form.endHour" placeholder="请输入班次结束时间小时" />
+        <div>
+          <el-form-item label="班次开始时间" prop="startHour">
+            <el-input class="w-16" v-model="form.startHour" placeholder="" /> <span class="w-8 h-8 border text-center">时</span> 
+            <el-input class="w-16" v-model="form.startMinutes" placeholder="" /> <span class="w-8 h-8 border text-center">分</span> 
+          </el-form-item>
+          <el-form-item label="班次结束时间" prop="endHour">
+            <el-input class="w-16" v-model="form.endHour" placeholder="" /> <span class="w-8 h-8 border text-center">时</span> 
+            <el-input class="w-16" v-model="form.endMinutes" placeholder="" /> <span class="w-8 h-8 border text-center">分</span> 
+          </el-form-item>
+        </div>
+        <el-form-item label="是否加班段" prop="isOvertimePeriod" @change="radioChange('isOvertimePeriod')">
+          <el-radio-group style="width: 192px;" v-model="form.isOvertimePeriod">
+            <el-radio :label="0">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="允许迟到多久" prop="arriveLateTime">
-          <el-input v-model="form.arriveLateTime" placeholder="请输入允许迟到多久" />
+        <el-form-item label="是否录加班条" prop="isRecord" @change="radioChange('isRecord')">
+          <el-radio-group v-model="form.isRecord">
+            <el-radio :label="0">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="允许早走多久" prop="leaveEarlyTime">
-          <el-input v-model="form.leaveEarlyTime" placeholder="请输入允许早走多久" />
+        <div>
+          <el-form-item label="是否允许迟到" prop="isAllowLate" @change="radioChange('isAllowLate')">
+            <el-radio-group style="width: 192px;" v-model="form.isAllowLate">
+              <el-radio :label="0">否</el-radio>
+              <el-radio :label="1">是</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="form.isAllowLate===1" label="允许迟到多久" prop="arriveLateTime">
+            <el-input-number class="w-192px!" v-model="form.arriveLateTime" controls-position="right" placeholder="请输入允许迟到多久" />
+          </el-form-item>
+        </div>
+
+        <div>
+          <el-form-item label="是否允许早退" prop="isAllowLeave" @change="radioChange('isAllowLeave')">
+            <el-radio-group style="width: 192px;" v-model="form.isAllowLeave">
+              <el-radio :label="0">否</el-radio>
+              <el-radio :label="1">是</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="form.isAllowLeave===1" label="允许早走多久" prop="leaveEarlyTime">
+            <el-input-number class="w-192px!" v-model="form.leaveEarlyTime" controls-position="right" placeholder="请输入允许早走多久" />
+          </el-form-item>
+        </div>
+
+        <div>
+          <el-form-item label="是否计缺勤" prop="isAbsenceWork" @change="radioChange('isAbsenceWork')">
+            <el-radio-group v-model="form.isAbsenceWork">
+              <el-radio :label="0">否</el-radio>
+              <el-radio :label="1">是</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <div  v-if="form.isAbsenceWork===1">
+            <el-form-item label="迟到多久计缺勤" prop="isAbsenceWorkLate">
+              <el-input-number class="w-192px!" v-model="form.isAbsenceWorkLate" controls-position="right" placeholder="请输入迟到多久计缺勤" />
+            </el-form-item>    
+            <el-form-item label="早退多久计缺勤" prop="isAbsenceWorkLeave">
+              <el-input-number class="w-192px!" v-model="form.isAbsenceWorkLeave" controls-position="right" placeholder="请输入早退多久计缺勤" />
+            </el-form-item>
+          </div>
+        </div>
+
+        <el-form-item label="是否上班免卡" prop="freeCardWork" @change="radioChange('freeCardWork')">
+          <el-radio-group style="width: 192px;" v-model="form.freeCardWork">
+            <el-radio :label="0">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="迟到分钟数" prop="seriousLate">
-          <el-input v-model="form.seriousLate" placeholder="请输入迟到分钟数" />
-        </el-form-item>
-        <el-form-item label="早退分钟数" prop="absenteeismLate">
-          <el-input v-model="form.absenteeismLate" placeholder="请输入早退分钟数" />
-        </el-form-item>
-        <el-form-item label="是否上班免卡" prop="freeCardWork">
-          <el-input v-model="form.freeCardWork" placeholder="请输入是否上班免卡" />
-        </el-form-item>
-        <el-form-item label="是否下班免卡" prop="freeCardAfterWork">
-          <el-input v-model="form.freeCardAfterWork" placeholder="请输入是否下班免卡" />
-        </el-form-item>
-        <el-form-item label="是否加班段" prop="isOvertimePeriod">
-          <el-input v-model="form.isOvertimePeriod" placeholder="请输入是否加班段" />
-        </el-form-item>
-        <el-form-item label="是否录加班条" prop="isRecord">
-          <el-input v-model="form.isRecord" placeholder="请输入是否录加班条" />
-        </el-form-item>
-        <el-form-item label="是否计缺勤" prop="isAbsenceWork">
-          <el-input v-model="form.isAbsenceWork" placeholder="请输入是否计缺勤" />
-        </el-form-item>
-        <el-form-item label="是否允许迟到" prop="isAllowLate">
-          <el-input v-model="form.isAllowLate" placeholder="请输入是否允许迟到" />
-        </el-form-item>
-        <el-form-item label="是否允许早退" prop="isAllowLeave">
-          <el-input v-model="form.isAllowLeave" placeholder="请输入是否允许早退" />
+        <el-form-item label="是否下班免卡" prop="freeCardAfterWork" @change="radioChange('freeCardAfterWork')">
+          <el-radio-group v-model="form.freeCardAfterWork">
+            <el-radio :label="0">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="迟到扣多少工时" prop="isReduceMoneyLate">
           <el-input v-model="form.isReduceMoneyLate" placeholder="请输入迟到扣多少工时" />
@@ -143,12 +189,7 @@
         <el-form-item label="早退扣多少工时" prop="isReduceMoneyLeave">
           <el-input v-model="form.isReduceMoneyLeave" placeholder="请输入早退扣多少工时" />
         </el-form-item>
-        <el-form-item label="迟到多久计缺勤" prop="isAbsenceWorkLate">
-          <el-input v-model="form.isAbsenceWorkLate" placeholder="请输入迟到多久计缺勤" />
-        </el-form-item>
-        <el-form-item label="早退多久计缺勤" prop="isAbsenceWorkLeave">
-          <el-input v-model="form.isAbsenceWorkLeave" placeholder="请输入早退多久计缺勤" />
-        </el-form-item>
+
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -161,7 +202,8 @@
 </template>
 
 <script setup name="Classes">
-import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/hr/classes";
+import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/hr/attendance/classes";
+import { listGroup } from "@/api/hr/attendance/group";
 
 const { proxy } = getCurrentInstance();
 
@@ -208,10 +250,34 @@ const data = reactive({
     isDeleted: null,
   },
   rules: {
+    name: [{ required: true, message: "班次名称不能为空", trigger: "blur" }],
+    classesgroupId: [{ required: true, message: "班组不能为空", trigger: "blur" }],
+    startHour: [{ required: true, message: "班次开始时间不能为空", trigger: "blur" }],
+    endHour: [{ required: true, message: "班次结束时间不能为空", trigger: "blur" }],
   }
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+
+const radioChange = (str) => {
+  if (str == 'isAllowLate' && form.value[str] === 0) {
+    form.value.arriveLateTime = null
+  }
+  if (str == 'isAllowLeave' && form.value[str] === 0) {
+    form.value.leaveEarlyTime = null
+  }
+  if (str == 'isAbsenceWork' && form.value[str] === 0) {
+    form.value.isAbsenceWorkLate = null
+    form.value.isAbsenceWorkLeave = null
+  }
+}
+
+const groupList = ref([])
+// 查询班组
+listGroup().then(res => {
+  groupList.value = res.rows
+})
 
 /** 查询班次列表 */
 function getList() {
@@ -243,14 +309,14 @@ function reset() {
     leaveEarlyTime: null,
     seriousLate: null,
     absenteeismLate: null,
-    freeCardWork: null,
-    freeCardAfterWork: null,
-    isOvertimePeriod: null,
+    freeCardWork: 0,
+    freeCardAfterWork: 0,
+    isOvertimePeriod: 0,
     overtimeType: null,
-    isRecord: null,
-    isAbsenceWork: null,
-    isAllowLate: null,
-    isAllowLeave: null,
+    isRecord: 0,
+    isAbsenceWork: 0,
+    isAllowLate: 0,
+    isAllowLeave: 0,
     isReduceMoneyLate: null,
     isReduceMoneyLeave: null,
     isAbsenceWorkLate: null,
@@ -341,3 +407,6 @@ function handleExport() {
 
 getList();
 </script>
+
+<style lang="scss" scoped>
+</style>
