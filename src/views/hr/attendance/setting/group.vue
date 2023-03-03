@@ -115,7 +115,14 @@
             <el-input v-model="form.department" placeholder="请输入所属部门" />
           </el-form-item>
           <el-form-item v-if="form.type === 2" label="员工">
-            <el-button>选择员工</el-button>
+            <!-- TODO 员工 -->
+            <!-- <el-cascader
+              :options="options"
+              :props="props"
+              collapse-tags
+              collapse-tags-tooltip
+              clearable
+            /> -->
           </el-form-item>
           <el-form-item label="计时班组工时" prop="classesHours">
             <el-radio-group v-model="form.isTimingClass">

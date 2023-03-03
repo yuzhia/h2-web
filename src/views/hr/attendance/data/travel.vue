@@ -99,7 +99,7 @@
             <el-date-picker clearable
               v-model="form.startTime"
               type="date"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="请选择开始时间">
             </el-date-picker>
           </el-form-item>
@@ -107,7 +107,7 @@
             <el-date-picker clearable
               v-model="form.endTime"
               type="date"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="请选择结束时间">
             </el-date-picker>
           </el-form-item>
