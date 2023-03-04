@@ -34,6 +34,16 @@
             <el-table-column label="出差（天）" align="center" prop="travelDays" />
             <el-table-column label="旷工（天）" align="center" prop="absentDays" />
             <el-table-column label="请假（天）" align="center" prop="leaveDays" />
+            <!-- 这里遍历 statisticsList[0],是因为表头都一样，所以取第一行数据的字段做为表头即可 -->
+            <el-table-column
+              align="center"
+              v-for="(item, index) in leaveTableData"
+              :key="index"
+              :prop="item.value"
+              :label="item.label"
+            >
+            </el-table-column>
+
         </el-table>
     </div>
 </template>
@@ -74,13 +84,24 @@ const calculate = (query) => {
     })
 }
 
+// 表头数据
+const leaveTableData = ref([])
 
 /** 查询考勤记录列表 */
 function getList() {
     loading.value = true;
-    listStatistics().then(response => {
-        console.log(response);
-        statisticsList.value = response.data;
+    listStatistics().then(res => {
+        console.log(res);
+        for (let i = 0; i < res.data.length; i++) {
+          for (let leave of res.data[i].leaveType) {
+            if (i == 0) {
+              leaveTableData.value.push({value: leave.id, label: leave.name})
+            }
+            res.data[i][leave.id] = leave.days
+          }
+        }
+        console.log(res.data);
+        statisticsList.value = res.data;
         // total.value = response.total;
         loading.value = false;
     });
