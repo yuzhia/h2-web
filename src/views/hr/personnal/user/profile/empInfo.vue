@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="userRef" :model="form" :rules="rules" label-width="80px" v-if="formList.length !== 0">
+  <el-form ref="userRef" :model="form" :rules="rules" label-width="80px">
     <div class="flex flex-wrap">
       <div v-for="item in formList" :key="item.id" class="w-1/4">
         <el-form-item :label="item.name" label-position="left" :prop="item.code" label-width="100px">
@@ -92,23 +92,8 @@ const listFields = () => {
   listField(props.tableId).then((res) => {
     // 动态添加验证
     for (let item of res.data) {
-      if (item.regex) {
-        rules.value[item.code] = [
-          {
-            pattern: eval(item.regex), //正则校验不用字符串
-            message: `请填写正确的${item.name}`,
-            trigger: 'blur'
-          }
-        ]
-      }
       if (item.isRequired == 1 || item.displayType == '4') {
-        rules.value[item.code] = [
-          {
-            required: true,
-            message: `${item.name}不能为空`,
-            trigger: 'blur'
-          }
-        ]
+        rules.value[item.code] = [{ required: true, message: `${item.name}不能为空`, trigger: 'blur' }]
       }
     }
     formList.value = res.data
@@ -130,7 +115,7 @@ function submit() {
         }
       }
       saveVal(param).then(() => {
-        proxy.$modal.msgSuccess('保存成功')
+        console.log('保存成功')
       })
     }
   })

@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function listCompany() {
+  return request({
+    url: '/system/dept/getCompany',
+    method: 'get'
+  })
+}
+
 // 查询部门列表
 export function listDept(query) {
   return request({

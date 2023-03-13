@@ -9,10 +9,10 @@
                     placeholder="选择时间"
                 />
             </el-form-item>
-            <div>{{ queryParams.startTime }}</div>
             <el-form-item>
                 <el-button type="primary" icon="Search" @click="handleQuery">提交</el-button>
                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                <el-button type="warning" plain icon="Download" @click="handleExport">导出</el-button>
             </el-form-item>
         </el-form>
 
@@ -34,7 +34,7 @@
             <el-table-column label="出差（天）" align="center" prop="travelDays" />
             <el-table-column label="旷工（天）" align="center" prop="absentDays" />
             <el-table-column label="请假（天）" align="center" prop="leaveDays" />
-            <!-- 这里遍历 statisticsList[0],是因为表头都一样，所以取第一行数据的字段做为表头即可 -->
+            <!-- 请假类别 -->
             <el-table-column
               align="center"
               v-for="(item, index) in leaveTableData"
@@ -118,6 +118,13 @@ async function handleQuery() {
 function resetQuery() {
     proxy.resetForm("queryRef");
     handleQuery();
+}
+
+/** 导出按钮操作 */
+function handleExport() {
+    proxy.download('/attendanceStatistics/export',{
+        ...queryParams.value
+    }, `attendanceStatistics_${new Date().getTime()}.xlsx`)
 }
 
 getList()

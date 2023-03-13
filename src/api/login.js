@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+export function getCompanySecret() {
+  return request({
+    url: '/common/getSecret',
+    headers: {
+      isToken: false
+    },
+    method: 'get'
+  })
+}
+
 // 登录方法
 export function login(username, password, code, uuid) {
   const data = {

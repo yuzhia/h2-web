@@ -201,6 +201,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
+  console.log(queryParams.value);
   listItem(queryParams.value).then(response => {
     console.log(response);
     itemList.value = response.rows;
